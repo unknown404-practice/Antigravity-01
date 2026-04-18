@@ -26,14 +26,13 @@ class NotificationService {
 }
 
 // --- FIREBASE CONFIGURATION ---
-// IMPORTANT: Replace the object below with your actual config from the Firebase Console!
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAqpA7vl_6a0a1dipkr3DSiejGtJFsrDNY",
+    authDomain: "aegis-tactical.firebaseapp.com",
+    projectId: "aegis-tactical",
+    storageBucket: "aegis-tactical.firebasestorage.app",
+    messagingSenderId: "674331637347",
+    appId: "1:674331637347:web:8782f0958c9cda6fbbaa56"
 };
 
 // Initialize Firebase
