@@ -132,7 +132,7 @@
                     <div class="stat-card"><div>MAP SYNC</div><div style="color: #2ecc71; font-weight: 600;">LIVE LINK</div></div>
                     <div class="stat-card"><div>CLOUD NODE</div><div style="color: var(--primary); font-weight: 600;">ENCRYPTED</div></div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px; height: calc(100vh - 280px);">
+                <div class="dashboard-grid">
                     <div style="position: relative; overflow: hidden; border-radius: 28px;">
                         <div id="main-map" style="background: var(--bg-surface-variant); height: 100%;"></div>
                         <div class="map-nav-controls">
@@ -141,7 +141,7 @@
                             <button onclick="window.app.moveMap('down')"><i class="fas fa-chevron-down"></i></button>
                         </div>
                     </div>
-                    <div style="background: var(--bg-surface-variant); border-radius: 28px; padding: 24px; display: flex; flex-direction: column;">
+                    <div class="monitor-panel">
                         <h3 style="margin-bottom: 20px; font-size: 1rem; color: var(--primary);">Incident Monitor</h3>
                         <div id="incident-feed" style="flex: 1; overflow-y: auto;"></div>
                     </div>
