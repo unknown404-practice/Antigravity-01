@@ -160,6 +160,50 @@ class AegisApp {
         this.refreshUI(); this.renderPPT();
     }
 
+    handleForgotKey() {
+        const e = document.getElementById('forgot-email').value;
+        if (!e) return NotificationService.show("Email required.", "error");
+        
+        NotificationService.show("ENCRYPTED SIGNAL SENT");
+        const btn = document.getElementById('forgot-btn');
+        btn.innerText = "SIGNAL DISPATCHED";
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            NotificationService.show(`Recovery link generated for ${e}`);
+            // In a real app, this would call a backend API
+            console.log(`AEGIS RECOVERY: Verification link sent to ${e}`);
+            btn.innerText = "SEND LINK";
+            btn.disabled = false;
+        }, 2000);
+    }
+
+    handlePFP(e) {
+        const f = e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = (ev) => {
+            const b64 = ev.target.result;
+            this.state.user.pfp = b64;
+            document.getElementById('user-pfp').src = b64;
+            document.getElementById('profile-pfp-large').src = b64;
+            this.saveProfile();
+        };
+        r.readAsDataURL(f);
+    }
+
+    saveProfile() {
+        const n = document.getElementById('profile-name-input').value;
+        if (!n) return NotificationService.show("Name required.", "error");
+        
+        this.state.user.name = n;
+        localStorage.setItem('aegis_user_profile', JSON.stringify(this.state.user));
+        localStorage.setItem('aegis_reg_' + this.state.user.email, JSON.stringify(this.state.user));
+        
+        document.getElementById('sidebar-user').innerText = n;
+        NotificationService.show("Profile Updated.");
+    }
+
     handleLogout() { localStorage.clear(); window.location.reload(); }
 
     initMap() {
