@@ -350,11 +350,12 @@ main {
 
     /* Responsive PPT */
     .plan-card { padding: 1.5rem; height: auto; min-height: 70vh; }
-    .plan-controls { flex-direction: column; align-items: stretch; gap: 12px; }
-    .plan-types { flex-wrap: wrap; justify-content: center; gap: 8px; }
-    .plan-nav { justify-content: center; border-top: 1px solid var(--outline); padding-top: 16px; gap: 12px; }
-    .plan-nav .action-btn { flex: 1; }
-    #ppt-viewport h1 { font-size: 1.3rem; margin-bottom: 12px; }
+    .plan-controls { flex-direction: column; align-items: stretch; gap: 20px; }
+    .plan-types { flex-direction: column; width: 100%; gap: 10px; }
+    .plan-types button { width: 100%; height: 50px; font-size: 0.9rem; }
+    .plan-nav { justify-content: space-between; border-top: 1px solid var(--outline); padding-top: 20px; gap: 12px; }
+    .plan-nav .action-btn { flex: 1; height: 44px; }
+    #ppt-viewport h1 { font-size: 1.4rem; margin-bottom: 16px; color: var(--primary); }
     
     /* Profile Responsive */
     #view-profile > div { padding: 1.5rem !important; }
