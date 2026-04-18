@@ -149,11 +149,11 @@
             </div>
 
             <div id="view-plan" class="view-content">
-                <div style="background: var(--bg-surface-variant); border-radius: 28px; padding: 40px; height: calc(100vh - 180px); display: flex; flex-direction: column;">
-                    <div id="ppt-viewport" style="flex: 1; overflow-y: auto;"><div id="ppt-content"></div></div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-                        <div style="display: flex; gap: 12px;"><button onclick="window.app.loadPPT('lockdown')" class="action-btn outlined">Lockdown</button><button onclick="window.app.loadPPT('medical')" class="action-btn outlined">Medical</button><button onclick="window.app.loadPPT('fire')" class="action-btn outlined">Fire</button></div>
-                        <div style="display: flex; gap: 20px; align-items: center;"><button id="ppt-prev" class="action-btn outlined">PREV</button><span id="ppt-page-indicator">PAGE 1</span><button id="ppt-next" class="action-btn outlined">NEXT</button></div>
+                <div class="plan-card">
+                    <div id="ppt-viewport"><div id="ppt-content"></div></div>
+                    <div class="plan-controls">
+                        <div class="plan-types"><button onclick="window.app.loadPPT('lockdown')" class="action-btn outlined">Lockdown</button><button onclick="window.app.loadPPT('medical')" class="action-btn outlined">Medical</button><button onclick="window.app.loadPPT('fire')" class="action-btn outlined">Fire</button></div>
+                        <div class="plan-nav"><button id="ppt-prev" class="action-btn outlined">PREV</button><span id="ppt-page-indicator">PAGE 1</span><button id="ppt-next" class="action-btn outlined">NEXT</button></div>
                     </div>
                 </div>
             </div>

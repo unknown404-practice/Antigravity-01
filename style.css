@@ -150,6 +150,26 @@ main {
 .action-btn.outlined { background: transparent; border: 1px solid var(--outline); color: var(--text-primary); }
 .action-btn.sos { background: #b3261e; color: white; width: 100%; height: 56px; font-weight: 700; letter-spacing: 1px; }
 
+/* Plan / PPT Components */
+.plan-card {
+    background: var(--bg-surface-variant);
+    border-radius: 28px;
+    padding: 40px;
+    height: calc(100vh - 180px);
+    display: flex;
+    flex-direction: column;
+}
+
+#ppt-viewport { flex: 1; overflow-y: auto; }
+.plan-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 16px;
+}
+.plan-types, .plan-nav { display: flex; gap: 12px; align-items: center; }
+
 /* Tactical Map */
 #main-map { border-radius: 28px; z-index: 10; }
 .map-nav-controls {
@@ -329,7 +349,10 @@ main {
     #thread-messages { height: 400px !important; }
 
     /* Responsive PPT */
-    #view-plan > div { padding: 1.5rem !important; height: auto !important; min-height: 80vh; }
+    .plan-card { padding: 1.5rem; height: auto; min-height: 70vh; }
+    .plan-controls { flex-direction: column; align-items: stretch; }
+    .plan-types { flex-wrap: wrap; justify-content: center; }
+    .plan-nav { justify-content: space-between; border-top: 1px solid var(--outline); padding-top: 16px; }
     #ppt-viewport h1 { font-size: 1.5rem; }
     
     /* Profile Responsive */
