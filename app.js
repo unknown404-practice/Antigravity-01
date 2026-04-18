@@ -52,8 +52,17 @@ class AegisApp {
         this.cacheDOMElements();
         this.applyTheme();
         this.bindEvents();
-        if (this.state.isLoggedIn && this.state.user) { this.revealApp(); this.initMap(); }
-        else { this.switchAuth('login'); document.getElementById('auth-screen').style.display = 'grid'; }
+        
+        if (this.state.isLoggedIn && this.state.user) { 
+            this.revealApp(); 
+            this.initMap(); 
+        } else { 
+            this.switchAuth('login'); 
+            document.getElementById('auth-screen').style.display = 'grid'; 
+            // Ensure splash is removed even if not logged in
+            setTimeout(() => { if (this.dom.splash) this.dom.splash.remove(); }, 2000);
+        }
+
         setInterval(() => { if (this.dom.time) this.dom.time.innerText = `NODE: ${new Date().toLocaleTimeString()} • SECURE`; }, 1000);
         window.onresize = () => { if (this.map) this.map.invalidateSize(); };
     }
