@@ -177,6 +177,13 @@ class AegisApp {
             .catch(err => NotificationService.show("Access Denied: " + err.message, "error"));
     }
 
+    handleGoogleLogin() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then(() => NotificationService.show("Authenticated with Google"))
+            .catch(err => NotificationService.show(err.message, "error"));
+    }
+
     revealApp() {
         if (this.dom.splash) this.dom.splash.remove();
         if (this.dom.authScreen) this.dom.authScreen.remove();
