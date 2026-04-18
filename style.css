@@ -350,10 +350,11 @@ main {
 
     /* Responsive PPT */
     .plan-card { padding: 1.5rem; height: auto; min-height: 70vh; }
-    .plan-controls { flex-direction: column; align-items: stretch; }
-    .plan-types { flex-wrap: wrap; justify-content: center; }
-    .plan-nav { justify-content: space-between; border-top: 1px solid var(--outline); padding-top: 16px; }
-    #ppt-viewport h1 { font-size: 1.5rem; }
+    .plan-controls { flex-direction: column; align-items: stretch; gap: 12px; }
+    .plan-types { flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .plan-nav { justify-content: center; border-top: 1px solid var(--outline); padding-top: 16px; gap: 12px; }
+    .plan-nav .action-btn { flex: 1; }
+    #ppt-viewport h1 { font-size: 1.3rem; margin-bottom: 12px; }
     
     /* Profile Responsive */
     #view-profile > div { padding: 1.5rem !important; }
@@ -361,7 +362,7 @@ main {
 
 @media (max-width: 480px) {
     .nav-arrows { gap: 4px; }
-    .action-btn { padding: 8px 16px; font-size: 0.8rem; }
+    .action-btn { padding: 8px 12px; font-size: 0.75rem; min-width: 60px; }
     header { margin-bottom: 16px; }
     .stat-card div:first-child { font-size: 0.65rem; }
 }
