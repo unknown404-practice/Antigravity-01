@@ -287,15 +287,39 @@ main {
     }
     aside.mobile-active { transform: translateX(0); }
 
-    main { padding: 1rem; height: 100vh; overflow-y: auto; }
+    main { padding: 0.75rem; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
     #mobile-menu-toggle { display: flex !important; }
     .desktop-only { display: none !important; }
 
-    .dashboard-grid { grid-template-columns: 1fr !important; height: auto !important; }
-    #main-map { height: 350px !important; }
+    .dashboard-grid { 
+        display: flex !important;
+        flex-direction: column;
+        gap: 16px; 
+        height: auto !important; 
+    }
+    
+    #main-map { 
+        height: 300px !important; 
+        width: 100%;
+        order: -1; /* Move map above the monitor */
+    }
 
-    .dashboard-stats { grid-template-columns: 1fr; gap: 1rem; }
-    .stat-card { padding: 1rem; }
+    .dashboard-stats { 
+        grid-template-columns: repeat(3, 1fr) !important; 
+        gap: 8px !important; 
+        margin-bottom: 16px !important;
+    }
+    
+    .stat-card { 
+        padding: 8px !important; 
+        text-align: center;
+        border-radius: 12px !important;
+    }
+    
+    .stat-card div:first-child { font-size: 0.5rem !important; margin-bottom: 4px; }
+    .stat-card div:last-child { font-size: 0.9rem !important; }
+
+    .monitor-panel { padding: 16px !important; }
 
     .modal-content { padding: 1.5rem; border-radius: 24px; }
     
