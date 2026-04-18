@@ -25,11 +25,26 @@ class NotificationService {
     }
 }
 
+// --- FIREBASE CONFIGURATION ---
+// IMPORTANT: Replace the object below with your actual config from the Firebase Console!
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
 class AegisApp {
     constructor() {
         this.state = {
-            isLoggedIn: localStorage.getItem('aegis_auth_active') === 'true',
-            user: JSON.parse(localStorage.getItem('aegis_user_profile')) || null,
+            isLoggedIn: false,
+            user: null,
             theme: localStorage.getItem('aegis_theme') || 'dark',
             incidents: JSON.parse(localStorage.getItem('aegis_incidents')) || [],
             discussions: JSON.parse(localStorage.getItem('aegis_chat')) || {},
@@ -53,15 +68,25 @@ class AegisApp {
         this.applyTheme();
         this.bindEvents();
         
-        if (this.state.isLoggedIn && this.state.user) { 
-            this.revealApp(); 
-            this.initMap(); 
-        } else { 
-            this.switchAuth('login'); 
-            document.getElementById('auth-screen').style.display = 'grid'; 
-            // Ensure splash is removed even if not logged in
-            setTimeout(() => { if (this.dom.splash) this.dom.splash.remove(); }, 2000);
-        }
+        // Listen for Auth State Changes
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.state.isLoggedIn = true;
+                this.state.user = {
+                    name: user.displayName || "Operator",
+                    email: user.email,
+                    pfp: user.photoURL || `https://ui-avatars.com/api/?name=${user.email}`
+                };
+                this.revealApp();
+                this.initMap();
+            } else {
+                this.state.isLoggedIn = false;
+                this.switchAuth('login');
+                if (this.dom.authScreen) this.dom.authScreen.style.display = 'grid';
+                // Remove splash screen after delay
+                setTimeout(() => { if (this.dom.splash) this.dom.splash.remove(); }, 2000);
+            }
+        });
 
         setInterval(() => { if (this.dom.time) this.dom.time.innerText = `NODE: ${new Date().toLocaleTimeString()} • SECURE`; }, 1000);
         window.onresize = () => { if (this.map) this.map.invalidateSize(); };
@@ -135,18 +160,22 @@ class AegisApp {
     handleSignUp() {
         const n = document.getElementById('signup-name').value, e = document.getElementById('signup-email').value, p = document.getElementById('signup-pass').value;
         if (!n || !e || !p) return NotificationService.show("Required.", "error");
-        localStorage.setItem('aegis_reg_' + e, JSON.stringify({ name: n, email: e, pass: p, pfp: `https://ui-avatars.com/api/?name=${n}` }));
-        this.switchAuth('login');
+        
+        auth.createUserWithEmailAndPassword(e, p)
+            .then((res) => {
+                res.user.updateProfile({ displayName: n });
+                NotificationService.show("Account Created.");
+                this.switchAuth('login');
+            })
+            .catch(err => NotificationService.show(err.message, "error"));
     }
 
     handleLogin() {
         const e = document.getElementById('login-email').value, p = document.getElementById('login-pass').value;
-        const s = JSON.parse(localStorage.getItem('aegis_reg_' + e));
-        if (s && s.pass === p) {
-            this.state.isLoggedIn = true; this.state.user = s;
-            localStorage.setItem('aegis_auth_active', 'true'); localStorage.setItem('aegis_user_profile', JSON.stringify(s));
-            this.revealApp(); this.initMap();
-        } else NotificationService.show("Denied.", "error");
+        if (!e || !p) return NotificationService.show("Credentials required.", "error");
+        
+        auth.signInWithEmailAndPassword(e, p)
+            .catch(err => NotificationService.show("Access Denied: " + err.message, "error"));
     }
 
     revealApp() {
@@ -164,18 +193,15 @@ class AegisApp {
         const e = document.getElementById('forgot-email').value;
         if (!e) return NotificationService.show("Email required.", "error");
         
-        NotificationService.show("ENCRYPTED SIGNAL SENT");
-        const btn = document.getElementById('forgot-btn');
-        btn.innerText = "SIGNAL DISPATCHED";
-        btn.disabled = true;
-        
-        setTimeout(() => {
-            NotificationService.show(`Recovery link generated for ${e}`);
-            // In a real app, this would call a backend API
-            console.log(`AEGIS RECOVERY: Verification link sent to ${e}`);
-            btn.innerText = "SEND LINK";
-            btn.disabled = false;
-        }, 2000);
+        auth.sendPasswordResetEmail(e)
+            .then(() => {
+                NotificationService.show("REAL RESET LINK SENT TO GMAIL");
+                const btn = document.getElementById('forgot-btn');
+                btn.innerText = "CHECK GMAIL";
+                btn.disabled = true;
+                setTimeout(() => { btn.innerText = "SEND LINK"; btn.disabled = false; }, 5000);
+            })
+            .catch(err => NotificationService.show(err.message, "error"));
     }
 
     handlePFP(e) {
@@ -196,15 +222,19 @@ class AegisApp {
         const n = document.getElementById('profile-name-input').value;
         if (!n) return NotificationService.show("Name required.", "error");
         
-        this.state.user.name = n;
-        localStorage.setItem('aegis_user_profile', JSON.stringify(this.state.user));
-        localStorage.setItem('aegis_reg_' + this.state.user.email, JSON.stringify(this.state.user));
-        
-        document.getElementById('sidebar-user').innerText = n;
-        NotificationService.show("Profile Updated.");
+        const user = auth.currentUser;
+        if (user) {
+            user.updateProfile({ displayName: n, photoURL: this.state.user.pfp })
+                .then(() => {
+                    this.state.user.name = n;
+                    document.getElementById('sidebar-user').innerText = n;
+                    NotificationService.show("Profile Synced with Cloud.");
+                })
+                .catch(err => NotificationService.show(err.message, "error"));
+        }
     }
 
-    handleLogout() { localStorage.clear(); window.location.reload(); }
+    handleLogout() { auth.signOut().then(() => window.location.reload()); }
 
     initMap() {
         if (this.map) return;
