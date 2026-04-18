@@ -167,8 +167,10 @@ main {
     align-items: center;
     margin-top: 24px;
     gap: 16px;
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping if space is tight */
 }
-.plan-types, .plan-nav { display: flex; gap: 12px; align-items: center; }
+.plan-types, .plan-nav { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
 /* Tactical Map */
 #main-map { border-radius: 28px; z-index: 10; }
@@ -351,8 +353,8 @@ main {
     /* Responsive PPT */
     .plan-card { padding: 1.5rem; height: auto; min-height: 70vh; }
     .plan-controls { flex-direction: column; align-items: stretch; gap: 20px; }
-    .plan-types { flex-direction: column; width: 100%; gap: 10px; }
-    .plan-types button { width: 100%; height: 50px; font-size: 0.9rem; }
+    .plan-types { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; gap: 10px; justify-content: center; }
+    .plan-types button { flex: 1; min-width: 120px; height: 50px; font-size: 0.9rem; }
     .plan-nav { justify-content: space-between; border-top: 1px solid var(--outline); padding-top: 20px; gap: 12px; }
     .plan-nav .action-btn { flex: 1; height: 44px; }
     #ppt-viewport h1 { font-size: 1.4rem; margin-bottom: 16px; color: var(--primary); }
